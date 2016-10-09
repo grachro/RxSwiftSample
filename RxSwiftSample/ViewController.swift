@@ -8,19 +8,50 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
+
 
 class ViewController: UIViewController {
 
+    
+    @IBOutlet weak var btnA: UIButton!
+    @IBOutlet weak var btnB: UIButton!
+    @IBOutlet weak var btnC: UIButton!
+    
+    let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        btnA.rx_tap
+            .subscribeNext { [unowned self] _ in
+                self.tappedBtn("a")
+            }
+            .addDisposableTo(disposeBag)
+        
+        btnB.rx_tap
+            .subscribeNext { [unowned self] _ in
+                self.tappedBtn("b")
+            }
+            .addDisposableTo(disposeBag)
+        
+        
+        btnC.rx_tap
+            .subscribeNext { [unowned self] _ in
+                self.tappedBtn("c")
+            }
+            .addDisposableTo(disposeBag)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    func tappedBtn(name:String) {
+        TapQueue.instance.add(name)
+        print("mein \(name) tapped")
+    }
 
 }
 
