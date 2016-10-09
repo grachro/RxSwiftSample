@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var btnA: UIButton!
     @IBOutlet weak var btnB: UIButton!
     @IBOutlet weak var btnC: UIButton!
+    @IBOutlet weak var lblResult: UILabel!
     
     let disposeBag = DisposeBag()
     
