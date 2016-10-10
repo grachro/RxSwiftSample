@@ -19,41 +19,50 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zzC-65-5XU">
-                                <rect key="frame" x="275" y="30" width="50" height="30"/>
-                                <color key="backgroundColor" red="0.80000001190000003" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="265" y="30" width="70" height="70"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="Obs-Yd-EJt"/>
-                                    <constraint firstAttribute="height" constant="30" id="cEp-g3-dXi"/>
+                                    <constraint firstAttribute="width" constant="70" id="Obs-Yd-EJt"/>
+                                    <constraint firstAttribute="height" constant="70" id="cEp-g3-dXi"/>
                                 </constraints>
-                                <state key="normal" title="B"/>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="50"/>
+                                <state key="normal" title="B">
+                                    <color key="titleColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="62h-4R-Ag1">
-                                <rect key="frame" x="520" y="30" width="50" height="30"/>
-                                <color key="backgroundColor" red="0.80000001190000003" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="500" y="30" width="70" height="70"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="YGT-pM-Hhs"/>
-                                    <constraint firstAttribute="height" constant="30" id="Z1w-lE-TQN"/>
+                                    <constraint firstAttribute="width" constant="70" id="YGT-pM-Hhs"/>
+                                    <constraint firstAttribute="height" constant="70" id="Z1w-lE-TQN"/>
                                 </constraints>
-                                <state key="normal" title="C"/>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="50"/>
+                                <state key="normal" title="C">
+                                    <color key="titleColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmV-ng-JQW">
-                                <rect key="frame" x="30" y="30" width="50" height="30"/>
-                                <color key="backgroundColor" red="0.80000001190000003" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="30" y="30" width="70" height="70"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="mfo-R6-JzO"/>
-                                    <constraint firstAttribute="width" constant="50" id="ndU-5p-47U"/>
+                                    <constraint firstAttribute="height" constant="70" id="mfo-R6-JzO"/>
+                                    <constraint firstAttribute="width" constant="70" id="ndU-5p-47U"/>
                                 </constraints>
-                                <state key="normal" title="A"/>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="50"/>
+                                <state key="normal" title="A">
+                                    <color key="titleColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQR-8N-Vtk">
-                                <rect key="frame" x="30" y="60" width="540" height="530"/>
+                                <rect key="frame" x="30" y="120" width="540" height="460"/>
                                 <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="jmV-ng-JQW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="0Sa-Yv-n6Y"/>
                             <constraint firstItem="zzC-65-5XU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2Lf-YE-FKJ"/>
@@ -65,10 +74,10 @@
                             <constraint firstItem="jmV-ng-JQW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="bVO-QG-h7b"/>
                             <constraint firstItem="zzC-65-5XU" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="dIa-U2-BXk"/>
                             <constraint firstItem="62h-4R-Ag1" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="h24-Cg-qQ9"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="rQR-8N-Vtk" secondAttribute="bottom" constant="10" id="mZS-QP-lGC"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="rQR-8N-Vtk" secondAttribute="bottom" constant="20" id="mZS-QP-lGC"/>
                             <constraint firstItem="rQR-8N-Vtk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="10" id="mjt-4g-MEp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="62h-4R-Ag1" secondAttribute="trailing" constant="10" id="tsH-13-IQJ"/>
-                            <constraint firstItem="rQR-8N-Vtk" firstAttribute="top" secondItem="zzC-65-5XU" secondAttribute="bottom" id="wNt-7W-l2u"/>
+                            <constraint firstItem="rQR-8N-Vtk" firstAttribute="top" secondItem="zzC-65-5XU" secondAttribute="bottom" constant="20" id="wNt-7W-l2u"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
