@@ -24,21 +24,24 @@ class TapQueue {
     private let _queue = PublishSubject<String>()
     private let backgroundScheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .Background)
     
+    
+    let refreshServer:Observable<[Item]>
+    
     private init () {
-        _queue
+        self.refreshServer = _queue
             .observeOn(backgroundScheduler)
             .buffer(timeSpan: 0.1, count: 10, scheduler: backgroundScheduler)
             .filter{items in items.count > 0}
             .flatMap{names in
                 MockNetworkApi.add(names)
             }
-            .subscribeNext{items in
-                print("  finish items [\(items)]")
+            .doOn{items in
+                print("  doOn items [\(items)]")
             }
-            .addDisposableTo(disposeBag)
     }
     
     func add(name:String) {
+        print("mein \(name) tapped")
         self._queue.onNext(name)
     }
     

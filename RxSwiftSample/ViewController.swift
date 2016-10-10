@@ -42,6 +42,18 @@ class ViewController: UIViewController {
                 self.tappedBtn("c")
             }
             .addDisposableTo(disposeBag)
+        
+        
+        
+        let result:Observable<[Item]> = TapQueue.instance.refreshServer
+        result
+            .observeOn(MainScheduler.instance)
+            .subscribeNext{items in
+                let s = items.map{"\($0.name)[\($0.count)]"}.joinWithSeparator(",")
+                self.lblResult.text = s
+            }
+            .addDisposableTo(disposeBag)
+        
     }
 
     override func didReceiveMemoryWarning() {
