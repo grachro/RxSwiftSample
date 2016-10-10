@@ -9,55 +9,60 @@
 import Foundation
 import RxSwift
 
-class Item: CustomStringConvertible  {
-    let name:String
-    var count:Int = 1
-    init(name:String) {self.name = name}
-    var description: String { return "Item(\(name),\(count))" }
-}
-
 class TapQueue {
     
     static let instance = TapQueue()
     
     private let disposeBag = DisposeBag()
-    private let _queue = PublishSubject<String>()
+    private let _queue = PublishSubject<Int>()
     private let backgroundScheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .Background)
     
     
-    let refreshServer:Observable<[Item]>
+    let _refreshServer = PublishSubject<[String]>()
+
+    var refreshServer:Observable<[String]> {
+        get {
+            return _refreshServer
+        }
+    }
+
     
     private init () {
-        self.refreshServer = _queue
+        _queue
             .observeOn(backgroundScheduler)
             .buffer(timeSpan: 0.1, count: 10, scheduler: backgroundScheduler)
-            .filter{items in items.count > 0}
-            .flatMap{names in
-                MockNetworkApi.add(names)
+            .filter{numbers in numbers.count > 0}
+            .flatMap{numbers in
+                MockNetworkApi.add(numbers)
             }
             .doOn{items in
                 print("  doOn items [\(items)]")
             }
+            .subscribeNext{allText in
+                self._refreshServer.onNext(allText)
+            }
+            .addDisposableTo(disposeBag)
+        
     }
     
-    func add(name:String) {
-        print("mein \(name) tapped")
-        self._queue.onNext(name)
+    func add(number:Int) {
+        print("mein \(number) tapped")
+        self._queue.onNext(number)
     }
     
 }
 
 
 class MockNetworkApi {
-    class func add(names:[String]) -> Observable<[Item]> {
+    class func add(numbers:[Int]) -> Observable<[String]> {
         return Observable.create {observer in
             
-            print("  back \(names)  network start")
+            print("  back \(numbers)  network start")
             
-            let items = MockServer.addAndGet(addNames:names)
+            let items = MockServer.addAndGet(addNumbers:numbers)
             
             NSThread.sleepForTimeInterval(3) //サーバに問い合わせて3秒かかった
-            print("  back \(names)  network end")
+            print("  back \(numbers)  network end")
             
             observer.onNext(items)
             observer.onCompleted()
@@ -73,19 +78,10 @@ class MockNetworkApi {
 
 
 class MockServer {
-    static var items:[Item] = []
-    class func addAndGet(addNames addNames:[String]) -> [Item] {
-        
-        addNames.forEach{addName in
-            let item:Item? = items.filter{$0.name == addName}.first
-            if let item = item {
-                item.count += 1
-            } else {
-                items.append(Item(name:addName))
-            }
-        }
-        
-        
-        return items
+    static var allText:[String] = []
+    class func addAndGet(addNumbers addNumbers:[Int]) -> [String] {
+        let j = addNumbers.map{String($0)}.joinWithSeparator(",")
+        allText.append("[\(j)]")
+        return allText
     }
 }

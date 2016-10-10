@@ -17,8 +17,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var btnA: UIButton!
     @IBOutlet weak var btnB: UIButton!
     @IBOutlet weak var btnC: UIButton!
-    @IBOutlet weak var lblResult: UILabel!
-    
+
+    @IBOutlet weak var lblResult1: UILabel!
+    @IBOutlet weak var lblResult2: UILabel!
+
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -26,31 +28,39 @@ class ViewController: UIViewController {
 
         btnA.rx_tap
             .subscribeNext { [unowned self] _ in
-                self.tappedBtn("a")
+                self.tappedBtn(1)
             }
             .addDisposableTo(disposeBag)
         
         btnB.rx_tap
             .subscribeNext { [unowned self] _ in
-                self.tappedBtn("b")
+                self.tappedBtn(2)
             }
             .addDisposableTo(disposeBag)
         
         
         btnC.rx_tap
             .subscribeNext { [unowned self] _ in
-                self.tappedBtn("c")
+                self.tappedBtn(3)
             }
             .addDisposableTo(disposeBag)
         
         
         
-        let result:Observable<[Item]> = TapQueue.instance.refreshServer
-        result
+        let _ = TapQueue.instance.refreshServer //Observable<[String]>
             .observeOn(MainScheduler.instance)
-            .subscribeNext{items in
-                let s = items.map{"\($0.name)[\($0.count)]"}.joinWithSeparator(",")
-                self.lblResult.text = s
+            .subscribeNext{allText in
+                let s = allText.joinWithSeparator("\n")
+                self.lblResult1.text = s
+            }
+            .addDisposableTo(disposeBag)
+        
+        
+        let _ = TapQueue.instance.refreshServer //Observable<[String]>
+            .observeOn(MainScheduler.instance)
+            .subscribeNext{allText in
+                let s = allText.reverse().joinWithSeparator("\n")
+                self.lblResult2.text = s
             }
             .addDisposableTo(disposeBag)
         
@@ -61,9 +71,8 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func tappedBtn(name:String) {
-        TapQueue.instance.add(name)
-        print("mein \(name) tapped")
+    func tappedBtn(number:Int) {
+        TapQueue.instance.add(number)
     }
 
 }
