@@ -19,7 +19,6 @@ class TapQueue {
     
     
     let _refreshServer = PublishSubject<[String]>()
-
     var refreshServer:Observable<[String]> {
         get {
             return _refreshServer
@@ -80,8 +79,9 @@ class MockNetworkApi {
 class MockServer {
     static var allText:[String] = []
     class func addAndGet(addNumbers addNumbers:[Int]) -> [String] {
-        let j = addNumbers.map{String($0)}.joinWithSeparator(",")
-        allText.append("[\(j)]")
+        let j = addNumbers.map{String($0)}.joinWithSeparator("⚡️")
+        allText.append("《\(j)》")
+        allText =  ([String])(allText.suffix(5))
         return allText
     }
 }

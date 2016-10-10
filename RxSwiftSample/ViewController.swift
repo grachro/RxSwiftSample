@@ -14,9 +14,9 @@ import RxCocoa
 class ViewController: UIViewController {
 
     
-    @IBOutlet weak var btnA: UIButton!
-    @IBOutlet weak var btnB: UIButton!
-    @IBOutlet weak var btnC: UIButton!
+    @IBOutlet weak var btn1: UIButton!
+    @IBOutlet weak var btn2: UIButton!
+    @IBOutlet weak var btn3: UIButton!
 
     @IBOutlet weak var lblResult1: UILabel!
     @IBOutlet weak var lblResult2: UILabel!
@@ -26,44 +26,35 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        btnA.rx_tap
-            .subscribeNext { [unowned self] _ in
-                self.tappedBtn(1)
+        btn1.rx_tap
+            .subscribeNext {
+                TapQueue.instance.add(1)
             }
             .addDisposableTo(disposeBag)
         
-        btnB.rx_tap
-            .subscribeNext { [unowned self] _ in
-                self.tappedBtn(2)
+        btn2.rx_tap
+            .subscribeNext {
+                TapQueue.instance.add(2)
             }
             .addDisposableTo(disposeBag)
         
-        
-        btnC.rx_tap
-            .subscribeNext { [unowned self] _ in
-                self.tappedBtn(3)
+        btn3.rx_tap
+            .subscribeNext {
+                TapQueue.instance.add(3)
             }
             .addDisposableTo(disposeBag)
-        
-        
         
         let _ = TapQueue.instance.refreshServer //Observable<[String]>
-            .observeOn(MainScheduler.instance)
-            .subscribeNext{allText in
-                let s = allText.joinWithSeparator("\n")
-                self.lblResult1.text = s
-            }
+            .map{$0.joinWithSeparator("\n")}
+            .observeOn(MainScheduler.instance) //メインスレッド
+            .bindTo(self.lblResult1.rx_text)
             .addDisposableTo(disposeBag)
-        
-        
+
         let _ = TapQueue.instance.refreshServer //Observable<[String]>
+            .map{$0.map{"😄\($0)😄"}.joinWithSeparator("\n")}
             .observeOn(MainScheduler.instance)
-            .subscribeNext{allText in
-                let s = allText.reverse().joinWithSeparator("\n")
-                self.lblResult2.text = s
-            }
+            .bindTo(self.lblResult2.rx_text)
             .addDisposableTo(disposeBag)
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,9 +62,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func tappedBtn(number:Int) {
-        TapQueue.instance.add(number)
-    }
+
 
 }
 
