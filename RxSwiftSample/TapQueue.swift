@@ -1,5 +1,5 @@
 //
-//  Network.swift
+//  TapQueue.swift
 //  RxSwiftSample
 //
 //  Created by grachro on 2016/10/09.
@@ -14,9 +14,6 @@ class TapQueue {
     static let instance = TapQueue()
     
     private let disposeBag = DisposeBag()
-    private let _queue = PublishSubject<Int>()
-    private let backgroundScheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .Background)
-    
     
     let _refreshServer = PublishSubject<[String]>()
     var refreshServer:Observable<[String]> {
@@ -26,16 +23,25 @@ class TapQueue {
     }
 
     
+    private let _queue = PublishSubject<Int>()
+    private let background = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .Background)
+    
+    func add(number:Int) {
+        print("mein \(number) tapped") //debug print
+        self._queue.onNext(number)
+    }
+
     private init () {
-        _queue
-            .observeOn(backgroundScheduler)
-            .buffer(timeSpan: 0.1, count: 10, scheduler: backgroundScheduler)
+        
+        self._queue
+            .observeOn(background)
+            .buffer(timeSpan: 0.1, count: 10, scheduler: background)
             .filter{numbers in numbers.count > 0}
             .flatMap{numbers in
                 MockNetworkApi.add(numbers)
             }
             .doOn{items in
-                print("  doOn items [\(items)]")
+                print("  doOn items [\(items)]") //debug print
             }
             .subscribeNext{allText in
                 self._refreshServer.onNext(allText)
@@ -44,10 +50,7 @@ class TapQueue {
         
     }
     
-    func add(number:Int) {
-        print("mein \(number) tapped")
-        self._queue.onNext(number)
-    }
+
     
 }
 
@@ -57,13 +60,11 @@ class MockNetworkApi {
         return Observable.create {observer in
             
             print("  back \(numbers)  network start")
-            
-            let items = MockServer.addAndGet(addNumbers:numbers)
-            
+            let allText = MockServer.addAndGet(addNumbers:numbers)
             NSThread.sleepForTimeInterval(3) //サーバに問い合わせて3秒かかった
             print("  back \(numbers)  network end")
             
-            observer.onNext(items)
+            observer.onNext(allText)
             observer.onCompleted()
             
             
