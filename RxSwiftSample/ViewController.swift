@@ -17,6 +17,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var btn1: UIButton!
     @IBOutlet weak var btn2: UIButton!
     @IBOutlet weak var btn3: UIButton!
+    
+    
+    @IBOutlet weak var btnClear: UIButton!
 
     @IBOutlet weak var lblResult: UILabel!
 
@@ -43,11 +46,17 @@ class ViewController: UIViewController {
             }
             .addDisposableTo(disposeBag)
         
-        let _ = TapQueue.instance.serverResult //Observable<[String]>
-            .map{$0.map{"😄\($0)😄"}.joinWithSeparator("\n")}
+        let _ = TapQueue.instance.serverResult
+            .map{(self.lblResult.text ?? "") + "😄\($0)😄\n"}
             .observeOn(MainScheduler.instance)
             .bindTo(self.lblResult.rx_text)
             .addDisposableTo(disposeBag)
+        
+        btnClear.rx_tap
+            .map{""}
+            .bindTo(self.lblResult.rx_text)
+            .addDisposableTo(disposeBag)
+        
     }
 
     override func didReceiveMemoryWarning() {

@@ -15,8 +15,8 @@ class TapQueue {
     
     private let disposeBag = DisposeBag()
     
-    let _serverResult = PublishSubject<[String]>()
-    var serverResult:Observable<[String]> {
+    let _serverResult = PublishSubject<String>()
+    var serverResult:Observable<String> {
         get {
             return _serverResult
         }
@@ -43,8 +43,8 @@ class TapQueue {
             .doOn{items in
                 print("  doOn items [\(items)]") //debug print
             }
-            .subscribeNext{allText in
-                self._serverResult.onNext(allText)
+            .subscribeNext{result in
+                self._serverResult.onNext(result)
             }
             .addDisposableTo(disposeBag)
         
@@ -54,35 +54,27 @@ class TapQueue {
     
 }
 
-
 class MockNetworkApi {
-    class func add(numbers:[Int]) -> Observable<[String]> {
+
+    class func add(numbers:[Int]) -> Observable<String> {
         return Observable.create {observer in
             
-            print("  back \(numbers)  network start")
-            let allText = MockServer.addAndGet(addNumbers:numbers)
-            NSThread.sleepForTimeInterval(3) //サーバに問い合わせて3秒かかった
-            print("  back \(numbers)  network end")
+            let semaphore:dispatch_semaphore_t = dispatch_semaphore_create(0)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                print("  back \(numbers)  network start")
+                let edited = "《" + numbers.map{String($0)}.joinWithSeparator("⚡️") + "》"
+                NSThread.sleepForTimeInterval(3) //サーバに問い合わせて3秒かかった
+                print("  back \(numbers)  network end")
+                
+                observer.onNext(edited)
+                observer.onCompleted()
+                
+                dispatch_semaphore_signal(semaphore)
+            });
             
-            observer.onNext(allText)
-            observer.onCompleted()
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
             
-            
-            //observer.onError()は省略
             return NopDisposable.instance
         }
-    }
-}
-
-
-
-
-class MockServer {
-    static var allText:[String] = []
-    class func addAndGet(addNumbers addNumbers:[Int]) -> [String] {
-        let j = addNumbers.map{String($0)}.joinWithSeparator("⚡️")
-        allText.append("《\(j)》")
-        allText =  ([String])(allText.suffix(5))
-        return allText
     }
 }
