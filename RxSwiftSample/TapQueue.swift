@@ -57,22 +57,25 @@ class TapQueue {
 class MockNetworkApi {
 
     class func add(numbers:[Int]) -> Observable<String> {
+        
+        let semaphore:dispatch_semaphore_t = dispatch_semaphore_create(0)
+        print("api 1::\(numbers)")
+        
         return Observable.create {observer in
-            
-            let semaphore:dispatch_semaphore_t = dispatch_semaphore_create(0)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                print("  back \(numbers)  network start")
                 let edited = "《" + numbers.map{String($0)}.joinWithSeparator("⚡️") + "》"
                 NSThread.sleepForTimeInterval(3) //サーバに問い合わせて3秒かかった
-                print("  back \(numbers)  network end")
                 
                 observer.onNext(edited)
                 observer.onCompleted()
                 
                 dispatch_semaphore_signal(semaphore)
+                print("api 2::\(numbers)")
+                
             });
             
             dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+            print("api 3::\(numbers)")
             
             return NopDisposable.instance
         }
