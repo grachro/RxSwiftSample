@@ -18,8 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var btn2: UIButton!
     @IBOutlet weak var btn3: UIButton!
 
-    @IBOutlet weak var lblResult1: UILabel!
-    @IBOutlet weak var lblResult2: UILabel!
+    @IBOutlet weak var lblResult: UILabel!
 
     let disposeBag = DisposeBag()
     
@@ -44,16 +43,10 @@ class ViewController: UIViewController {
             }
             .addDisposableTo(disposeBag)
         
-        let _ = TapQueue.instance.refreshServer //Observable<[String]>
-            .map{$0.joinWithSeparator("\n")}
-            .observeOn(MainScheduler.instance) //メインスレッド
-            .bindTo(self.lblResult1.rx_text)
-            .addDisposableTo(disposeBag)
-
-        let _ = TapQueue.instance.refreshServer //Observable<[String]>
+        let _ = TapQueue.instance.serverResult //Observable<[String]>
             .map{$0.map{"😄\($0)😄"}.joinWithSeparator("\n")}
             .observeOn(MainScheduler.instance)
-            .bindTo(self.lblResult2.rx_text)
+            .bindTo(self.lblResult.rx_text)
             .addDisposableTo(disposeBag)
     }
 

@@ -15,10 +15,10 @@ class TapQueue {
     
     private let disposeBag = DisposeBag()
     
-    let _refreshServer = PublishSubject<[String]>()
-    var refreshServer:Observable<[String]> {
+    let _serverResult = PublishSubject<[String]>()
+    var serverResult:Observable<[String]> {
         get {
-            return _refreshServer
+            return _serverResult
         }
     }
 
@@ -44,7 +44,7 @@ class TapQueue {
                 print("  doOn items [\(items)]") //debug print
             }
             .subscribeNext{allText in
-                self._refreshServer.onNext(allText)
+                self._serverResult.onNext(allText)
             }
             .addDisposableTo(disposeBag)
         
