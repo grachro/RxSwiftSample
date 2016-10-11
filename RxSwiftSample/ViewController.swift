@@ -7,18 +7,54 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+
 
 class ViewController: UIViewController {
 
+    
+    @IBOutlet weak var btn1: UIButton!
+    @IBOutlet weak var btn2: UIButton!
+    @IBOutlet weak var btn3: UIButton!
+
+    @IBOutlet weak var lblResult: UILabel!
+
+    let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        btn1.rx_tap
+            .subscribeNext {
+                TapQueue.instance.add(1)
+            }
+            .addDisposableTo(disposeBag)
+        
+        btn2.rx_tap
+            .subscribeNext {
+                TapQueue.instance.add(2)
+            }
+            .addDisposableTo(disposeBag)
+        
+        btn3.rx_tap
+            .subscribeNext {
+                TapQueue.instance.add(3)
+            }
+            .addDisposableTo(disposeBag)
+        
+        let _ = TapQueue.instance.serverResult //Observable<[String]>
+            .map{$0.map{"😄\($0)😄"}.joinWithSeparator("\n")}
+            .observeOn(MainScheduler.instance)
+            .bindTo(self.lblResult.rx_text)
+            .addDisposableTo(disposeBag)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
 
 }
